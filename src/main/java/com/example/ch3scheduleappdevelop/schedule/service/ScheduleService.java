@@ -81,4 +81,13 @@ public class ScheduleService {
                 schedule.getUpdatedAt()
         );
     }
+
+    @Transactional
+    public void delete(Long scheduleId) {
+        boolean existence = scheduleRepository.existsById(scheduleId);
+        if (!existence) {
+            throw new IllegalStateException("해당 일정이 존재하지 않습니다.");
+        }
+        scheduleRepository.deleteById(scheduleId);
+    }
 }
