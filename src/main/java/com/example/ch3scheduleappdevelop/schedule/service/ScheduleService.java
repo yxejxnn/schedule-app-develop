@@ -1,9 +1,6 @@
 package com.example.ch3scheduleappdevelop.schedule.service;
 
-import com.example.ch3scheduleappdevelop.schedule.dto.ScheduleCreateRequestDto;
-import com.example.ch3scheduleappdevelop.schedule.dto.ScheduleCreateResponseDto;
-import com.example.ch3scheduleappdevelop.schedule.dto.ScheduleGetAllResponseDto;
-import com.example.ch3scheduleappdevelop.schedule.dto.ScheduleGetOneResponseDto;
+import com.example.ch3scheduleappdevelop.schedule.dto.*;
 import com.example.ch3scheduleappdevelop.schedule.entity.Schedule;
 import com.example.ch3scheduleappdevelop.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -52,7 +49,7 @@ public class ScheduleService {
                 .collect(Collectors.toList());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public ScheduleGetOneResponseDto getOne(Long scheduleId) {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
                 () -> new IllegalStateException("해당 일정이 존재하지 않습니다.")
