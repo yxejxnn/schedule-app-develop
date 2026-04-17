@@ -28,8 +28,7 @@ public class ScheduleService {
                 savedSchedule.getTitle(),
                 savedSchedule.getContent(),
                 savedSchedule.getAuthorName(),
-                savedSchedule.getCreatedAt(),
-                savedSchedule.getUpdatedAt()
+                savedSchedule.getCreatedAt()
         );
     }
 }
