@@ -1,12 +1,8 @@
 package com.example.ch3scheduleappdevelop.schedule.controller;
 
-import com.example.ch3scheduleappdevelop.schedule.dto.ScheduleCreateRequestDto;
-import com.example.ch3scheduleappdevelop.schedule.dto.ScheduleCreateResponseDto;
-import com.example.ch3scheduleappdevelop.schedule.dto.ScheduleGetAllResponseDto;
-import com.example.ch3scheduleappdevelop.schedule.dto.ScheduleGetOneResponseDto;
+import com.example.ch3scheduleappdevelop.schedule.dto.*;
 import com.example.ch3scheduleappdevelop.schedule.service.ScheduleService;
 import lombok.RequiredArgsConstructor;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -33,5 +29,10 @@ public class ScheduleController {
     @GetMapping("/{scheduleId}")
     public ResponseEntity<ScheduleGetOneResponseDto> scheduleGetOne(@PathVariable Long scheduleId) {
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.getOne(scheduleId));
+    }
+
+    @PutMapping("{scheduleId}")
+    public ResponseEntity<ScheduleUpdateResponseDto> scheduleUpdate(@PathVariable Long scheduleId, @RequestBody ScheduleUpdateRequestDto requestDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.update(scheduleId, requestDto));
     }
 }

@@ -64,4 +64,21 @@ public class ScheduleService {
                 schedule.getUpdatedAt()
         );
     }
+
+    @Transactional
+    public ScheduleUpdateResponseDto update(Long scheduleId, ScheduleUpdateRequestDto requestDto) {
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
+                () -> new IllegalStateException("해당 일정이 존재하지 않습니다.")
+        );
+
+        schedule.update(requestDto.getTitle(), requestDto.getContent(), requestDto.getAuthorName());
+
+        return new ScheduleUpdateResponseDto(
+                schedule.getId(),
+                schedule.getTitle(),
+                schedule.getContent(),
+                schedule.getAuthorName(),
+                schedule.getUpdatedAt()
+        );
+    }
 }
