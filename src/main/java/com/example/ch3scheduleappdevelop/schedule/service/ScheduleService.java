@@ -2,11 +2,15 @@ package com.example.ch3scheduleappdevelop.schedule.service;
 
 import com.example.ch3scheduleappdevelop.schedule.dto.ScheduleCreateRequestDto;
 import com.example.ch3scheduleappdevelop.schedule.dto.ScheduleCreateResponseDto;
+import com.example.ch3scheduleappdevelop.schedule.dto.ScheduleGetAllResponseDto;
 import com.example.ch3scheduleappdevelop.schedule.entity.Schedule;
 import com.example.ch3scheduleappdevelop.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,5 +34,20 @@ public class ScheduleService {
                 savedSchedule.getAuthorName(),
                 savedSchedule.getCreatedAt()
         );
+    }
+
+    @Transactional(readOnly = true)
+    public List<ScheduleGetAllResponseDto> getAll() {
+
+        List<Schedule> scheduleList = scheduleRepository.findAll();
+
+        return scheduleList.stream()
+                .map(schedule -> new ScheduleGetAllResponseDto(
+                        schedule.getId(),
+                        schedule.getTitle(),
+                        schedule.getAuthorName(),
+                        schedule.getCreatedAt()
+                ))
+                .collect(Collectors.toList());
     }
 }
