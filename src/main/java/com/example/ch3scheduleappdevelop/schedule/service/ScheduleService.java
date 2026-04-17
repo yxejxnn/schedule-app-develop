@@ -3,6 +3,7 @@ package com.example.ch3scheduleappdevelop.schedule.service;
 import com.example.ch3scheduleappdevelop.schedule.dto.ScheduleCreateRequestDto;
 import com.example.ch3scheduleappdevelop.schedule.dto.ScheduleCreateResponseDto;
 import com.example.ch3scheduleappdevelop.schedule.dto.ScheduleGetAllResponseDto;
+import com.example.ch3scheduleappdevelop.schedule.dto.ScheduleGetOneResponseDto;
 import com.example.ch3scheduleappdevelop.schedule.entity.Schedule;
 import com.example.ch3scheduleappdevelop.schedule.repository.ScheduleRepository;
 import lombok.RequiredArgsConstructor;
@@ -49,5 +50,21 @@ public class ScheduleService {
                         schedule.getCreatedAt()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional
+    public ScheduleGetOneResponseDto getOne(Long scheduleId) {
+        Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
+                () -> new IllegalStateException("해당 일정이 존재하지 않습니다.")
+        );
+
+        return new ScheduleGetOneResponseDto(
+                schedule.getId(),
+                schedule.getTitle(),
+                schedule.getContent(),
+                schedule.getAuthorName(),
+                schedule.getCreatedAt(),
+                schedule.getUpdatedAt()
+        );
     }
 }
