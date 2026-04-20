@@ -1,12 +1,17 @@
 package com.example.ch3scheduleappdevelop.user.service;
 
+import com.example.ch3scheduleappdevelop.schedule.dto.ScheduleGetAllResponseDto;
 import com.example.ch3scheduleappdevelop.user.dto.UserCreateRequestDto;
 import com.example.ch3scheduleappdevelop.user.dto.UserCreateResponseDto;
+import com.example.ch3scheduleappdevelop.user.dto.UserGetAllResponseDto;
 import com.example.ch3scheduleappdevelop.user.entity.User;
 import com.example.ch3scheduleappdevelop.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,5 +34,18 @@ public class UserService {
                 savedUser.getUserEmail(),
                 savedUser.getCreatedAt()
         );
+    }
+
+    @Transactional(readOnly = true)
+    public List<UserGetAllResponseDto> getAll() {
+
+        List<User> userList = userRepository.findAll();
+
+        return userList.stream()
+                .map(user -> new UserGetAllResponseDto(
+                        user.getId(),
+                        user.getUserName()
+                ))
+                .collect(Collectors.toList());
     }
 }
