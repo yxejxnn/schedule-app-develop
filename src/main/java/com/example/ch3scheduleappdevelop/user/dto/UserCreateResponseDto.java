@@ -9,13 +9,13 @@ public class UserCreateResponseDto {
 
     private final Long id;
     private final String userName;
-    private final String email;
+    private final String userEmail;
     private final LocalDateTime createdAt;
 
-    public UserCreateResponseDto(Long id, String userName, String email, LocalDateTime createdAt) {
+    public UserCreateResponseDto(Long id, String userName, String userEmail, LocalDateTime createdAt) {
         this.id = id;
         this.userName = userName;
-        this.email = email;
+        this.userEmail = userEmail;
         this.createdAt = createdAt;
     }
 }

@@ -6,5 +6,5 @@ import lombok.Getter;
 public class UserCreateRequestDto {
 
     private String userName;
-    private String email;
+    private String userEmail;
 }

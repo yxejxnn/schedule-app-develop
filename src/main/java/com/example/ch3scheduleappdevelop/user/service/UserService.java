@@ -18,7 +18,7 @@ public class UserService {
     public UserCreateResponseDto save(UserCreateRequestDto requestDto) {
         User user = new User(
                 requestDto.getUserName(),
-                requestDto.getEmail()
+                requestDto.getUserEmail()
         );
 
         User savedUser = userRepository.save(user);
@@ -26,7 +26,7 @@ public class UserService {
         return new UserCreateResponseDto(
                 savedUser.getId(),
                 savedUser.getUserName(),
-                savedUser.getEmail(),
+                savedUser.getUserEmail(),
                 savedUser.getCreatedAt()
         );
     }
