@@ -4,6 +4,7 @@ import com.example.ch3scheduleappdevelop.schedule.dto.ScheduleGetAllResponseDto;
 import com.example.ch3scheduleappdevelop.user.dto.UserCreateRequestDto;
 import com.example.ch3scheduleappdevelop.user.dto.UserCreateResponseDto;
 import com.example.ch3scheduleappdevelop.user.dto.UserGetAllResponseDto;
+import com.example.ch3scheduleappdevelop.user.dto.UserGetOneResponseDto;
 import com.example.ch3scheduleappdevelop.user.entity.User;
 import com.example.ch3scheduleappdevelop.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -47,5 +48,20 @@ public class UserService {
                         user.getUserName()
                 ))
                 .collect(Collectors.toList());
+    }
+
+    @Transactional(readOnly = true)
+    public UserGetOneResponseDto getOne(Long userId) {
+        User user = userRepository.findById(userId).orElseThrow(
+                () -> new IllegalStateException("해당 유저가 존재하지 않습니다.")
+        );
+
+        return new UserGetOneResponseDto(
+                user.getId(),
+                user.getUserName(),
+                user.getUserEmail(),
+                user.getCreatedAt(),
+                user.getUpdatedAt()
+        );
     }
 }

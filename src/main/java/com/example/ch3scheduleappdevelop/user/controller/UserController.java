@@ -3,6 +3,7 @@ package com.example.ch3scheduleappdevelop.user.controller;
 import com.example.ch3scheduleappdevelop.user.dto.UserCreateRequestDto;
 import com.example.ch3scheduleappdevelop.user.dto.UserCreateResponseDto;
 import com.example.ch3scheduleappdevelop.user.dto.UserGetAllResponseDto;
+import com.example.ch3scheduleappdevelop.user.dto.UserGetOneResponseDto;
 import com.example.ch3scheduleappdevelop.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,5 +27,10 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserGetAllResponseDto>> userGetAll() {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getAll());
+    }
+
+    @GetMapping("/{userId}")
+    public ResponseEntity<UserGetOneResponseDto> userGetOne(@PathVariable Long userId) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.getOne(userId));
     }
 }
