@@ -35,4 +35,10 @@ public class UserController {
     public ResponseEntity<UserUpdateResponseDto> userUpdate(@PathVariable Long userId, @RequestBody UserUpdateRequestDto requestDto) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId, requestDto));
     }
+
+    @DeleteMapping("/{userId}")
+    public ResponseEntity<Void> userDelete(@PathVariable Long userId) {
+        userService.delete(userId);
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
 }
