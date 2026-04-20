@@ -7,4 +7,5 @@ public class UserCreateRequestDto {
 
     private String userName;
     private String userEmail;
+    private String password;
 }
