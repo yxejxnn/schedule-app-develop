@@ -18,7 +18,7 @@ public class Schedule extends BaseEntity {
     private Long id;
     private String title;
     private String content;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id")
     private User user;
 
