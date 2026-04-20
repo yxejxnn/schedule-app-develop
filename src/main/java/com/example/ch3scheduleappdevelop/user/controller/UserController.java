@@ -1,9 +1,6 @@
 package com.example.ch3scheduleappdevelop.user.controller;
 
-import com.example.ch3scheduleappdevelop.user.dto.UserCreateRequestDto;
-import com.example.ch3scheduleappdevelop.user.dto.UserCreateResponseDto;
-import com.example.ch3scheduleappdevelop.user.dto.UserGetAllResponseDto;
-import com.example.ch3scheduleappdevelop.user.dto.UserGetOneResponseDto;
+import com.example.ch3scheduleappdevelop.user.dto.*;
 import com.example.ch3scheduleappdevelop.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -32,5 +29,10 @@ public class UserController {
     @GetMapping("/{userId}")
     public ResponseEntity<UserGetOneResponseDto> userGetOne(@PathVariable Long userId) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.getOne(userId));
+    }
+
+    @PutMapping("/{userId}")
+    public ResponseEntity<UserUpdateResponseDto> userUpdate(@PathVariable Long userId, @RequestBody UserUpdateRequestDto requestDto) {
+        return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId, requestDto));
     }
 }
