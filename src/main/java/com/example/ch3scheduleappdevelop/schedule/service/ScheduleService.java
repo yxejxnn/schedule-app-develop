@@ -3,6 +3,8 @@ package com.example.ch3scheduleappdevelop.schedule.service;
 import com.example.ch3scheduleappdevelop.schedule.dto.*;
 import com.example.ch3scheduleappdevelop.schedule.entity.Schedule;
 import com.example.ch3scheduleappdevelop.schedule.repository.ScheduleRepository;
+import com.example.ch3scheduleappdevelop.user.entity.User;
+import com.example.ch3scheduleappdevelop.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,13 +17,18 @@ import java.util.stream.Collectors;
 public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
+    private final UserRepository userRepository;
 
     @Transactional
     public ScheduleCreateResponseDto save(ScheduleCreateRequestDto requestDto) {
+        User user = userRepository.findById(requestDto.getUserId()).orElseThrow(
+                () -> new IllegalStateException("해당 유저가 존재하지 않습니다.")
+        );
+
         Schedule schedule = new Schedule(
                 requestDto.getTitle(),
                 requestDto.getContent(),
-                requestDto.getAuthorName()
+                user
         );
         Schedule savedSchedule = scheduleRepository.save(schedule);
 
@@ -29,7 +36,7 @@ public class ScheduleService {
                 savedSchedule.getId(),
                 savedSchedule.getTitle(),
                 savedSchedule.getContent(),
-                savedSchedule.getAuthorName(),
+                savedSchedule.getUser().getId(),
                 savedSchedule.getCreatedAt()
         );
     }
@@ -43,7 +50,7 @@ public class ScheduleService {
                 .map(schedule -> new ScheduleGetAllResponseDto(
                         schedule.getId(),
                         schedule.getTitle(),
-                        schedule.getAuthorName(),
+                        schedule.getUser().getId(),
                         schedule.getCreatedAt()
                 ))
                 .collect(Collectors.toList());
@@ -59,7 +66,7 @@ public class ScheduleService {
                 schedule.getId(),
                 schedule.getTitle(),
                 schedule.getContent(),
-                schedule.getAuthorName(),
+                schedule.getUser().getId(),
                 schedule.getCreatedAt(),
                 schedule.getUpdatedAt()
         );
@@ -71,14 +78,14 @@ public class ScheduleService {
                 () -> new IllegalStateException("해당 일정이 존재하지 않습니다.")
         );
 
-        schedule.update(requestDto.getTitle(), requestDto.getContent(), requestDto.getAuthorName());
+        schedule.update(requestDto.getTitle(), requestDto.getContent());
         scheduleRepository.flush();
 
         return new ScheduleUpdateResponseDto(
                 schedule.getId(),
                 schedule.getTitle(),
                 schedule.getContent(),
-                schedule.getAuthorName(),
+                schedule.getUser().getId(),
                 schedule.getUpdatedAt()
         );
     }

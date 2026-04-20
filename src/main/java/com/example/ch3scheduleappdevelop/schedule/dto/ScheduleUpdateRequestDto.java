@@ -7,5 +7,4 @@ public class ScheduleUpdateRequestDto {
 
     private String title;
     private String content;
-    private String authorName;
 }

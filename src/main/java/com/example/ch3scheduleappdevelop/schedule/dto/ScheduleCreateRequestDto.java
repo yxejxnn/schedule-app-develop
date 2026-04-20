@@ -7,5 +7,5 @@ public class ScheduleCreateRequestDto {
 
     private String title;
     private String content;
-    private String authorName;
+    private Long userId;
 }

@@ -9,13 +9,13 @@ public class ScheduleGetAllResponseDto {
 
     private final Long id;
     private final String title;
-    private final String authorName;
+    private final Long userId;
     private final LocalDateTime createdAt;
 
-    public ScheduleGetAllResponseDto(Long id, String title, String authorName, LocalDateTime createdAt) {
+    public ScheduleGetAllResponseDto(Long id, String title, Long userId, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
-        this.authorName = authorName;
+        this.userId = userId;
         this.createdAt = createdAt;
     }
 }

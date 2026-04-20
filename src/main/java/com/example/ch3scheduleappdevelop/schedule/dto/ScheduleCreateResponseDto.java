@@ -10,14 +10,14 @@ public class ScheduleCreateResponseDto {
     private final Long id;
     private final String title;
     private final String content;
-    private final String authorName;
+    private final Long userId;
     private final LocalDateTime createdAt;
 
-    public ScheduleCreateResponseDto(Long id, String title, String content, String authorName, LocalDateTime createdAt) {
+    public ScheduleCreateResponseDto(Long id, String title, String content, Long userId, LocalDateTime createdAt) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.authorName = authorName;
+        this.userId = userId;
         this.createdAt = createdAt;
     }
 }
