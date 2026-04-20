@@ -2,6 +2,7 @@ package com.example.ch3scheduleappdevelop.schedule.controller;
 
 import com.example.ch3scheduleappdevelop.schedule.dto.*;
 import com.example.ch3scheduleappdevelop.schedule.service.ScheduleService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +18,10 @@ public class ScheduleController {
     private final ScheduleService scheduleService;
 
     @PostMapping
-    public ResponseEntity<ScheduleCreateResponseDto> scheduleCreate(@RequestBody ScheduleCreateRequestDto requestDto) {
+    public ResponseEntity<ScheduleCreateResponseDto> scheduleCreate(@RequestBody ScheduleCreateRequestDto requestDto, HttpSession session) {
+        if (session.getAttribute("loginUser") == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduleService.save(requestDto));
     }
 
@@ -32,12 +36,18 @@ public class ScheduleController {
     }
 
     @PutMapping("/{scheduleId}")
-    public ResponseEntity<ScheduleUpdateResponseDto> scheduleUpdate(@PathVariable Long scheduleId, @RequestBody ScheduleUpdateRequestDto requestDto) {
+    public ResponseEntity<ScheduleUpdateResponseDto> scheduleUpdate(@PathVariable Long scheduleId, @RequestBody ScheduleUpdateRequestDto requestDto, HttpSession session) {
+        if (session.getAttribute("loginUser") == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
         return ResponseEntity.status(HttpStatus.OK).body(scheduleService.update(scheduleId, requestDto));
     }
 
     @DeleteMapping("/{scheduleId}")
-    public ResponseEntity<Void> scheduleDelete(@PathVariable Long scheduleId) {
+    public ResponseEntity<Void> scheduleDelete(@PathVariable Long scheduleId, HttpSession session) {
+        if (session.getAttribute("loginUser") == null) {
+            throw new IllegalArgumentException("로그인이 필요합니다.");
+        }
         scheduleService.delete(scheduleId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }

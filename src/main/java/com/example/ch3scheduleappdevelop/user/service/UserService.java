@@ -87,4 +87,15 @@ public class UserService {
         }
         userRepository.deleteById(userId);
     }
+
+    @Transactional(readOnly = true)
+    public UserSessionDto login(UserLoginRequestDto requestDto) {
+        User user = userRepository.findByUserEmail(requestDto.getUserEmail()).orElseThrow(
+                () -> new IllegalStateException("존재하지 않는 이메일입니다.")
+        );
+        if (!user.getPassword().equals(requestDto.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+        return new UserSessionDto(user.getId(), user.getUserEmail());
+    }
 }

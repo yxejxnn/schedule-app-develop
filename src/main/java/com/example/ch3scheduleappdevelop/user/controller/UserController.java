@@ -2,6 +2,7 @@ package com.example.ch3scheduleappdevelop.user.controller;
 
 import com.example.ch3scheduleappdevelop.user.dto.*;
 import com.example.ch3scheduleappdevelop.user.service.UserService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,5 +41,12 @@ public class UserController {
     public ResponseEntity<Void> userDelete(@PathVariable Long userId) {
         userService.delete(userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@RequestBody UserLoginRequestDto requestDto, HttpSession session) {
+        UserSessionDto userSessionDto = userService.login(requestDto);
+        session.setAttribute("loginUser", userSessionDto);
+        return ResponseEntity.status(HttpStatus.OK).body("로그인 성공!");
     }
 }
