@@ -8,6 +8,10 @@ import com.example.ch3scheduleappdevelop.schedule.repository.ScheduleRepository;
 import com.example.ch3scheduleappdevelop.user.entity.User;
 import com.example.ch3scheduleappdevelop.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -99,5 +103,12 @@ public class ScheduleService {
             throw new ScheduleNotFoundException();
         }
         scheduleRepository.deleteById(scheduleId);
+    }
+
+    @Transactional(readOnly = true)
+    public Page<SchedulePageResponseDto> getPage(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"));
+        return scheduleRepository.findAll(pageable)
+                .map(schedule -> new SchedulePageResponseDto(schedule));
     }
 }
