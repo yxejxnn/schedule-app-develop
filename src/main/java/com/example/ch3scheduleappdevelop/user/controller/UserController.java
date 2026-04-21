@@ -1,5 +1,6 @@
 package com.example.ch3scheduleappdevelop.user.controller;
 
+import com.example.ch3scheduleappdevelop.common.exception.UnauthorizedException;
 import com.example.ch3scheduleappdevelop.user.dto.*;
 import com.example.ch3scheduleappdevelop.user.service.UserService;
 import jakarta.servlet.http.HttpSession;
@@ -34,12 +35,18 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserUpdateResponseDto> userUpdate(@PathVariable Long userId, @Valid @RequestBody UserUpdateRequestDto requestDto) {
+    public ResponseEntity<UserUpdateResponseDto> userUpdate(@PathVariable Long userId, @Valid @RequestBody UserUpdateRequestDto requestDto, HttpSession session) {
+        if (session.getAttribute("loginUser") == null) {
+            throw new UnauthorizedException();
+        }
         return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId, requestDto));
     }
 
     @DeleteMapping("/{userId}")
-    public ResponseEntity<Void> userDelete(@PathVariable Long userId) {
+    public ResponseEntity<Void> userDelete(@PathVariable Long userId, HttpSession session) {
+        if (session.getAttribute("loginUser") == null) {
+            throw new UnauthorizedException();
+        }
         userService.delete(userId);
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
@@ -49,5 +56,11 @@ public class UserController {
         UserSessionDto userSessionDto = userService.login(requestDto);
         session.setAttribute("loginUser", userSessionDto);
         return ResponseEntity.status(HttpStatus.OK).body("로그인 성공!");
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpSession session) {
+        session.invalidate();
+        return ResponseEntity.status(HttpStatus.OK).body("로그아웃 성공!");
     }
 }

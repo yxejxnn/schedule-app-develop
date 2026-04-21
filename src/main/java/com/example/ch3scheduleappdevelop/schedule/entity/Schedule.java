@@ -1,6 +1,6 @@
 package com.example.ch3scheduleappdevelop.schedule.entity;
 
-import com.example.ch3scheduleappdevelop.comment.entitty.Comment;
+import com.example.ch3scheduleappdevelop.comment.entity.Comment;
 import com.example.ch3scheduleappdevelop.common.entity.BaseEntity;
 import com.example.ch3scheduleappdevelop.user.entity.User;
 import jakarta.persistence.*;

@@ -3,7 +3,7 @@ package com.example.ch3scheduleappdevelop.comment.service;
 import com.example.ch3scheduleappdevelop.comment.dto.CommentCreateRequestDto;
 import com.example.ch3scheduleappdevelop.comment.dto.CommentCreateResponseDto;
 import com.example.ch3scheduleappdevelop.comment.dto.CommentGetAllResponseDto;
-import com.example.ch3scheduleappdevelop.comment.entitty.Comment;
+import com.example.ch3scheduleappdevelop.comment.entity.Comment;
 import com.example.ch3scheduleappdevelop.comment.repository.CommentRepository;
 import com.example.ch3scheduleappdevelop.common.exception.ScheduleNotFoundException;
 import com.example.ch3scheduleappdevelop.common.exception.UserNotFoundException;

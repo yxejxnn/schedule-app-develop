@@ -75,7 +75,6 @@ public class UserService {
         );
 
         user.update(requestDto.getUserName(), requestDto.getUserEmail());
-        userRepository.flush();
 
         return new UserUpdateResponseDto(
                 user.getId(),

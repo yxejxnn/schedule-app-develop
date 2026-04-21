@@ -1,4 +1,4 @@
-package com.example.ch3scheduleappdevelop.comment.entitty;
+package com.example.ch3scheduleappdevelop.comment.entity;
 
 import com.example.ch3scheduleappdevelop.common.entity.BaseEntity;
 import com.example.ch3scheduleappdevelop.schedule.entity.Schedule;
