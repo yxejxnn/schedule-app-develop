@@ -1,5 +1,6 @@
 package com.example.ch3scheduleappdevelop.user.controller;
 
+import com.example.ch3scheduleappdevelop.common.exception.ForbiddenException;
 import com.example.ch3scheduleappdevelop.common.exception.UnauthorizedException;
 import com.example.ch3scheduleappdevelop.user.dto.*;
 import com.example.ch3scheduleappdevelop.user.service.UserService;
@@ -36,14 +37,24 @@ public class UserController {
 
     @PutMapping("/{userId}")
     public ResponseEntity<UserUpdateResponseDto> userUpdate(@PathVariable Long userId, @Valid @RequestBody UserUpdateRequestDto requestDto, HttpSession session) {
+        UserSessionDto loginUser = (UserSessionDto) session.getAttribute("loginUser");
+
         if (session.getAttribute("loginUser") == null) {
             throw new UnauthorizedException();
+        }
+        if (!loginUser.getId().equals(userId)) {
+            throw new ForbiddenException();
         }
         return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId, requestDto));
     }
 
     @DeleteMapping("/{userId}")
     public ResponseEntity<Void> userDelete(@PathVariable Long userId, HttpSession session) {
+        UserSessionDto loginUser = (UserSessionDto) session.getAttribute("loginUser");
+
+        if (loginUser == null) {
+            throw new ForbiddenException();
+        }
         if (session.getAttribute("loginUser") == null) {
             throw new UnauthorizedException();
         }
