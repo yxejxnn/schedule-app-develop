@@ -1,5 +1,7 @@
 package com.example.ch3scheduleappdevelop.user.service;
 
+import com.example.ch3scheduleappdevelop.common.exception.InvalidCredentialsException;
+import com.example.ch3scheduleappdevelop.common.exception.UserNotFoundException;
 import com.example.ch3scheduleappdevelop.user.dto.*;
 import com.example.ch3scheduleappdevelop.user.entity.User;
 import com.example.ch3scheduleappdevelop.user.repository.UserRepository;
@@ -50,7 +52,7 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserGetOneResponseDto getOne(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalStateException("해당 유저가 존재하지 않습니다.")
+                () -> new UserNotFoundException()
         );
 
         return new UserGetOneResponseDto(
@@ -65,7 +67,7 @@ public class UserService {
     @Transactional
     public UserUpdateResponseDto update(Long userId, UserUpdateRequestDto requestDto) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new IllegalStateException("해당 유저가 존재하지 않습니다.")
+                () -> new UserNotFoundException()
         );
 
         user.update(requestDto.getUserName(), requestDto.getUserEmail());
@@ -83,7 +85,7 @@ public class UserService {
     public void delete(Long userId) {
         boolean existence = userRepository.existsById(userId);
         if (!existence) {
-            throw new IllegalStateException("해당 유저가 존재하지 않습니다.");
+            throw new UserNotFoundException();
         }
         userRepository.deleteById(userId);
     }
@@ -91,10 +93,10 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserSessionDto login(UserLoginRequestDto requestDto) {
         User user = userRepository.findByUserEmail(requestDto.getUserEmail()).orElseThrow(
-                () -> new IllegalStateException("존재하지 않는 이메일입니다.")
+                () -> new InvalidCredentialsException()
         );
         if (!user.getPassword().equals(requestDto.getPassword())) {
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+            throw new InvalidCredentialsException();
         }
         return new UserSessionDto(user.getId(), user.getUserEmail());
     }

@@ -3,6 +3,7 @@ package com.example.ch3scheduleappdevelop.user.controller;
 import com.example.ch3scheduleappdevelop.user.dto.*;
 import com.example.ch3scheduleappdevelop.user.service.UserService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping
-    public ResponseEntity<UserCreateResponseDto> userCreate(@RequestBody UserCreateRequestDto requestDto) {
+    public ResponseEntity<UserCreateResponseDto> userCreate(@Valid @RequestBody UserCreateRequestDto requestDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(userService.save(requestDto));
     }
 
@@ -33,7 +34,7 @@ public class UserController {
     }
 
     @PutMapping("/{userId}")
-    public ResponseEntity<UserUpdateResponseDto> userUpdate(@PathVariable Long userId, @RequestBody UserUpdateRequestDto requestDto) {
+    public ResponseEntity<UserUpdateResponseDto> userUpdate(@PathVariable Long userId, @Valid @RequestBody UserUpdateRequestDto requestDto) {
         return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId, requestDto));
     }
 
@@ -44,7 +45,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody UserLoginRequestDto requestDto, HttpSession session) {
+    public ResponseEntity<String> login(@Valid @RequestBody UserLoginRequestDto requestDto, HttpSession session) {
         UserSessionDto userSessionDto = userService.login(requestDto);
         session.setAttribute("loginUser", userSessionDto);
         return ResponseEntity.status(HttpStatus.OK).body("로그인 성공!");

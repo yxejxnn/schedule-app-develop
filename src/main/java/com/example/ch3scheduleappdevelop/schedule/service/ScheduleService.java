@@ -1,5 +1,7 @@
 package com.example.ch3scheduleappdevelop.schedule.service;
 
+import com.example.ch3scheduleappdevelop.common.exception.ScheduleNotFoundException;
+import com.example.ch3scheduleappdevelop.common.exception.UserNotFoundException;
 import com.example.ch3scheduleappdevelop.schedule.dto.*;
 import com.example.ch3scheduleappdevelop.schedule.entity.Schedule;
 import com.example.ch3scheduleappdevelop.schedule.repository.ScheduleRepository;
@@ -22,7 +24,7 @@ public class ScheduleService {
     @Transactional
     public ScheduleCreateResponseDto save(ScheduleCreateRequestDto requestDto) {
         User user = userRepository.findById(requestDto.getUserId()).orElseThrow(
-                () -> new IllegalStateException("해당 유저가 존재하지 않습니다.")
+                () -> new UserNotFoundException()
         );
 
         Schedule schedule = new Schedule(
@@ -59,7 +61,7 @@ public class ScheduleService {
     @Transactional(readOnly = true)
     public ScheduleGetOneResponseDto getOne(Long scheduleId) {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
-                () -> new IllegalStateException("해당 일정이 존재하지 않습니다.")
+                () -> new ScheduleNotFoundException()
         );
 
         return new ScheduleGetOneResponseDto(
@@ -75,7 +77,7 @@ public class ScheduleService {
     @Transactional
     public ScheduleUpdateResponseDto update(Long scheduleId, ScheduleUpdateRequestDto requestDto) {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
-                () -> new IllegalStateException("해당 일정이 존재하지 않습니다.")
+                () -> new ScheduleNotFoundException()
         );
 
         schedule.update(requestDto.getTitle(), requestDto.getContent());
@@ -94,7 +96,7 @@ public class ScheduleService {
     public void delete(Long scheduleId) {
         boolean existence = scheduleRepository.existsById(scheduleId);
         if (!existence) {
-            throw new IllegalStateException("해당 일정이 존재하지 않습니다.");
+            throw new ScheduleNotFoundException();
         }
         scheduleRepository.deleteById(scheduleId);
     }
