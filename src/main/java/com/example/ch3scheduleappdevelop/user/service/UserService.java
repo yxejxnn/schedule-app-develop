@@ -2,6 +2,7 @@ package com.example.ch3scheduleappdevelop.user.service;
 
 import com.example.ch3scheduleappdevelop.common.exception.InvalidCredentialsException;
 import com.example.ch3scheduleappdevelop.common.exception.UserNotFoundException;
+import com.example.ch3scheduleappdevelop.config.PasswordEncoder;
 import com.example.ch3scheduleappdevelop.user.dto.*;
 import com.example.ch3scheduleappdevelop.user.entity.User;
 import com.example.ch3scheduleappdevelop.user.repository.UserRepository;
@@ -17,13 +18,16 @@ import java.util.stream.Collectors;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public UserCreateResponseDto save(UserCreateRequestDto requestDto) {
+        String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
+
         User user = new User(
                 requestDto.getUserName(),
                 requestDto.getUserEmail(),
-                requestDto.getPassword()
+                encodedPassword
         );
 
         User savedUser = userRepository.save(user);
@@ -95,7 +99,7 @@ public class UserService {
         User user = userRepository.findByUserEmail(requestDto.getUserEmail()).orElseThrow(
                 () -> new InvalidCredentialsException()
         );
-        if (!user.getPassword().equals(requestDto.getPassword())) {
+        if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
             throw new InvalidCredentialsException();
         }
         return new UserSessionDto(user.getId(), user.getUserEmail());
