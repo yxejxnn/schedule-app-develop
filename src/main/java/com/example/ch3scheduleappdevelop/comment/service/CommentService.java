@@ -45,13 +45,7 @@ public class CommentService {
 
         Comment savedComment = commentRepository.save(comment);
 
-        return new CommentCreateResponseDto(
-                savedComment.getId(),
-                savedComment.getSchedule().getId(),
-                savedComment.getUser().getId(),
-                savedComment.getContent(),
-                savedComment.getCreatedAt()
-        );
+        return CommentCreateResponseDto.from(savedComment);
     }
 
     // 댓글 다건 조회
@@ -61,14 +55,7 @@ public class CommentService {
         List<Comment> commentList = commentRepository.findAll();
 
         return commentList.stream()
-                .map(comment -> new CommentGetAllResponseDto(
-                        comment.getId(),
-                        comment.getSchedule().getId(),
-                        comment.getUser().getId(),
-                        comment.getContent(),
-                        comment.getCreatedAt(),
-                        comment.getUpdatedAt()
-                ))
+                .map(comment -> CommentGetAllResponseDto.from(comment))
                 .collect(Collectors.toList());
     }
 }

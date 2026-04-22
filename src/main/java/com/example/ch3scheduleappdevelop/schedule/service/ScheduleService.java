@@ -39,13 +39,7 @@ public class ScheduleService {
         );
         Schedule savedSchedule = scheduleRepository.save(schedule);
 
-        return new ScheduleCreateResponseDto(
-                savedSchedule.getId(),
-                savedSchedule.getTitle(),
-                savedSchedule.getContent(),
-                savedSchedule.getUser().getId(),
-                savedSchedule.getCreatedAt()
-        );
+        return ScheduleCreateResponseDto.from(savedSchedule);
     }
 
     // 일정 다건 조회
@@ -55,12 +49,7 @@ public class ScheduleService {
         List<Schedule> scheduleList = scheduleRepository.findAll();
 
         return scheduleList.stream()
-                .map(schedule -> new ScheduleGetAllResponseDto(
-                        schedule.getId(),
-                        schedule.getTitle(),
-                        schedule.getUser().getId(),
-                        schedule.getCreatedAt()
-                ))
+                .map(schedule -> ScheduleGetAllResponseDto.from(schedule))
                 .collect(Collectors.toList());
     }
 
@@ -71,14 +60,7 @@ public class ScheduleService {
                 ScheduleNotFoundException::new
         );
 
-        return new ScheduleGetOneResponseDto(
-                schedule.getId(),
-                schedule.getTitle(),
-                schedule.getContent(),
-                schedule.getUser().getId(),
-                schedule.getCreatedAt(),
-                schedule.getUpdatedAt()
-        );
+        return ScheduleGetOneResponseDto.from(schedule);
     }
 
     // 일정 수정
@@ -90,13 +72,7 @@ public class ScheduleService {
 
         schedule.update(requestDto.getTitle(), requestDto.getContent());
 
-        return new ScheduleUpdateResponseDto(
-                schedule.getId(),
-                schedule.getTitle(),
-                schedule.getContent(),
-                schedule.getUser().getId(),
-                schedule.getUpdatedAt()
-        );
+        return ScheduleUpdateResponseDto.from(schedule);
     }
 
     // 일정 삭제
@@ -115,13 +91,6 @@ public class ScheduleService {
         // 수정일 기준 내림차순 정렬, 기본 페이지 크기 10
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"));
         return scheduleRepository.findAll(pageable)
-                .map(schedule -> new SchedulePageResponseDto(
-                        schedule.getTitle(),
-                        schedule.getContent(),
-                        schedule.getCommentList().size(),
-                        schedule.getCreatedAt(),
-                        schedule.getUpdatedAt(),
-                        schedule.getUser().getName()
-                ));
+                .map(schedule -> SchedulePageResponseDto.from(schedule));
     }
 }

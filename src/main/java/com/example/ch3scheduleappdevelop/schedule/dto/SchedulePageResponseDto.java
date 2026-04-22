@@ -1,5 +1,6 @@
 package com.example.ch3scheduleappdevelop.schedule.dto;
 
+import com.example.ch3scheduleappdevelop.schedule.entity.Schedule;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -16,4 +17,14 @@ public class SchedulePageResponseDto {
     private final LocalDateTime updatedAt;
     private final String name;
 
+    public static SchedulePageResponseDto from(Schedule schedule) {
+        return new SchedulePageResponseDto(
+                schedule.getTitle(),
+                schedule.getContent(),
+                schedule.getCommentList().size(),
+                schedule.getCreatedAt(),
+                schedule.getUpdatedAt(),
+                schedule.getUser().getName()
+        );
+    }
 }

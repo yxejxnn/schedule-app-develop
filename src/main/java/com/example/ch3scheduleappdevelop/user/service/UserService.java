@@ -33,12 +33,7 @@ public class UserService {
 
         User savedUser = userRepository.save(user);
 
-        return new UserCreateResponseDto(
-                savedUser.getId(),
-                savedUser.getName(),
-                savedUser.getEmail(),
-                savedUser.getCreatedAt()
-        );
+        return UserCreateResponseDto.from(savedUser);
     }
 
     // 유저 다건 조회
@@ -48,10 +43,7 @@ public class UserService {
         List<User> userList = userRepository.findAll();
 
         return userList.stream()
-                .map(user -> new UserGetAllResponseDto(
-                        user.getId(),
-                        user.getName()
-                ))
+                .map(user -> UserGetAllResponseDto.from(user))
                 .collect(Collectors.toList());
     }
 
@@ -62,13 +54,7 @@ public class UserService {
                 UserNotFoundException::new
         );
 
-        return new UserGetOneResponseDto(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getCreatedAt(),
-                user.getUpdatedAt()
-        );
+        return UserGetOneResponseDto.from(user);
     }
 
     // 유저 수정
@@ -80,12 +66,7 @@ public class UserService {
 
         user.update(requestDto.getName(), requestDto.getEmail());
 
-        return new UserUpdateResponseDto(
-                user.getId(),
-                user.getName(),
-                user.getEmail(),
-                user.getUpdatedAt()
-        );
+        return UserUpdateResponseDto.from(user);
     }
 
     // 유저 삭제
@@ -108,6 +89,6 @@ public class UserService {
         if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
             throw new InvalidCredentialsException();
         }
-        return new UserSessionDto(user.getId(), user.getEmail());
+        return UserSessionDto.from(user);
     }
 }

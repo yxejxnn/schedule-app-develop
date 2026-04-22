@@ -1,5 +1,6 @@
 package com.example.ch3scheduleappdevelop.schedule.dto;
 
+import com.example.ch3scheduleappdevelop.schedule.entity.Schedule;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
@@ -15,4 +16,15 @@ public class ScheduleGetOneResponseDto {
     private final Long userId;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
+
+    public static ScheduleGetOneResponseDto from(Schedule schedule) {
+        return new ScheduleGetOneResponseDto(
+                schedule.getId(),
+                schedule.getTitle(),
+                schedule.getContent(),
+                schedule.getUser().getId(),
+                schedule.getCreatedAt(),
+                schedule.getUpdatedAt()
+        );
+    }
 }
