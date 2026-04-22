@@ -21,6 +21,7 @@ public class CommentController {
 
     private final CommentService commentService;
 
+    // 댓글 생성
     @PostMapping
     public ResponseEntity<CommentCreateResponseDto> commentCreate(@Valid @RequestBody CommentCreateRequestDto requestDto, HttpSession session) {
         if (session.getAttribute("loginUser") == null) {
@@ -29,6 +30,7 @@ public class CommentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(commentService.save(requestDto));
     }
 
+    // 댓글 다건 조회
     @GetMapping
     public ResponseEntity<List<CommentGetAllResponseDto>> commentGetAll() {
         return ResponseEntity.ok(commentService.getAll());

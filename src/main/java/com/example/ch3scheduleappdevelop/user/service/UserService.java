@@ -20,6 +20,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    // 회원가입 (유저 생성)
     @Transactional
     public UserCreateResponseDto save(UserCreateRequestDto requestDto) {
         String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
@@ -40,6 +41,7 @@ public class UserService {
         );
     }
 
+    // 유저 다건 조회
     @Transactional(readOnly = true)
     public List<UserGetAllResponseDto> getAll() {
 
@@ -53,6 +55,7 @@ public class UserService {
                 .collect(Collectors.toList());
     }
 
+    // 유저 단건 조회
     @Transactional(readOnly = true)
     public UserGetOneResponseDto getOne(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
@@ -68,6 +71,7 @@ public class UserService {
         );
     }
 
+    // 유저 수정
     @Transactional
     public UserUpdateResponseDto update(Long userId, UserUpdateRequestDto requestDto) {
         User user = userRepository.findById(userId).orElseThrow(
@@ -84,6 +88,7 @@ public class UserService {
         );
     }
 
+    // 유저 삭제
     @Transactional
     public void delete(Long userId) {
         boolean existence = userRepository.existsById(userId);
@@ -93,11 +98,13 @@ public class UserService {
         userRepository.deleteById(userId);
     }
 
+    // 로그인
     @Transactional(readOnly = true)
     public UserSessionDto login(UserLoginRequestDto requestDto) {
         User user = userRepository.findByEmail(requestDto.getEmail()).orElseThrow(
                 InvalidCredentialsException::new
         );
+        // 이메일과 비밀번호 모두 같은 예외를 던져서 어느 쪽이 틀렸는지 노출하지 않음 (보안)
         if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
             throw new InvalidCredentialsException();
         }

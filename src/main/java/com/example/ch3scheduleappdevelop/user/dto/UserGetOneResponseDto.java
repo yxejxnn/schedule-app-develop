@@ -14,5 +14,4 @@ public class UserGetOneResponseDto {
     private final String email;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
-
 }

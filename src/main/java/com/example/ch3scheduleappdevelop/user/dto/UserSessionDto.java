@@ -9,5 +9,4 @@ public class UserSessionDto {
 
     private final Long id;
     private final String email;
-
 }

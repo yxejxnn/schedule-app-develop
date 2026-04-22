@@ -26,6 +26,7 @@ public class CommentService {
     private final UserRepository userRepository;
     private final ScheduleRepository scheduleRepository;
 
+    // 댓글 생성
     @Transactional
     public CommentCreateResponseDto save(CommentCreateRequestDto requestDto) {
         User user = userRepository.findById(requestDto.getUserId()).orElseThrow(
@@ -53,6 +54,7 @@ public class CommentService {
         );
     }
 
+    // 댓글 다건 조회
     @Transactional(readOnly = true)
     public List<CommentGetAllResponseDto> getAll() {
 

@@ -13,5 +13,4 @@ public class UserUpdateResponseDto {
     private final String name;
     private final String email;
     private final LocalDateTime updatedAt;
-
 }

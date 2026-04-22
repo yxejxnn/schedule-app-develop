@@ -13,5 +13,4 @@ public class ScheduleGetAllResponseDto {
     private final String title;
     private final Long userId;
     private final LocalDateTime createdAt;
-
 }

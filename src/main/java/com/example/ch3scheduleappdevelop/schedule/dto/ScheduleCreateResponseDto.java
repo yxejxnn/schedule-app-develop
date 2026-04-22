@@ -14,5 +14,4 @@ public class ScheduleCreateResponseDto {
     private final String content;
     private final Long userId;
     private final LocalDateTime createdAt;
-
 }

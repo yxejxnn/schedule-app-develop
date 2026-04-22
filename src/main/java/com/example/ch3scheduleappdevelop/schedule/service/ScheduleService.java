@@ -25,6 +25,7 @@ public class ScheduleService {
     private final ScheduleRepository scheduleRepository;
     private final UserRepository userRepository;
 
+    // 일정 생성
     @Transactional
     public ScheduleCreateResponseDto save(ScheduleCreateRequestDto requestDto) {
         User user = userRepository.findById(requestDto.getUserId()).orElseThrow(
@@ -47,6 +48,7 @@ public class ScheduleService {
         );
     }
 
+    // 일정 다건 조회
     @Transactional(readOnly = true)
     public List<ScheduleGetAllResponseDto> getAll() {
 
@@ -62,6 +64,7 @@ public class ScheduleService {
                 .collect(Collectors.toList());
     }
 
+    // 일정 단건 조회
     @Transactional(readOnly = true)
     public ScheduleGetOneResponseDto getOne(Long scheduleId) {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
@@ -78,6 +81,7 @@ public class ScheduleService {
         );
     }
 
+    // 일정 수정
     @Transactional
     public ScheduleUpdateResponseDto update(Long scheduleId, ScheduleUpdateRequestDto requestDto) {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
@@ -95,6 +99,7 @@ public class ScheduleService {
         );
     }
 
+    // 일정 삭제
     @Transactional
     public void delete(Long scheduleId) {
         boolean existence = scheduleRepository.existsById(scheduleId);
@@ -104,8 +109,10 @@ public class ScheduleService {
         scheduleRepository.deleteById(scheduleId);
     }
 
+    // 일정 페이지 조회
     @Transactional(readOnly = true)
     public Page<SchedulePageResponseDto> getPage(int page, int size) {
+        // 수정일 기준 내림차순 정렬, 기본 페이지 크기 10
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"));
         return scheduleRepository.findAll(pageable)
                 .map(schedule -> new SchedulePageResponseDto(

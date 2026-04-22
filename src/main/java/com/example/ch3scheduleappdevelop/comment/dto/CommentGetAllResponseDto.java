@@ -15,5 +15,4 @@ public class CommentGetAllResponseDto {
     private final String content;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
-
 }

@@ -9,5 +9,4 @@ public class UserGetAllResponseDto {
 
     private final Long id;
     private final String name;
-
 }

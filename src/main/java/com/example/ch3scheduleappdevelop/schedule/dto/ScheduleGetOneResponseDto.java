@@ -15,5 +15,4 @@ public class ScheduleGetOneResponseDto {
     private final Long userId;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
-
 }

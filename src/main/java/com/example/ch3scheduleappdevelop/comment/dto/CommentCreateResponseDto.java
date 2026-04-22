@@ -14,5 +14,4 @@ public class CommentCreateResponseDto {
     private final Long userId;
     private final String content;
     private final LocalDateTime createdAt;
-    
 }

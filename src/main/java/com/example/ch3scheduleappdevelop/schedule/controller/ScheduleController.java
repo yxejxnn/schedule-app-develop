@@ -20,6 +20,7 @@ public class ScheduleController {
 
     private final ScheduleService scheduleService;
 
+    // 일정 생성
     @PostMapping
     public ResponseEntity<ScheduleCreateResponseDto> scheduleCreate(@Valid @RequestBody ScheduleCreateRequestDto requestDto, HttpSession session) {
         if (session.getAttribute("loginUser") == null) {
@@ -28,16 +29,19 @@ public class ScheduleController {
         return ResponseEntity.status(HttpStatus.CREATED).body(scheduleService.save(requestDto));
     }
 
+    // 일정 다건 조회
     @GetMapping
     public ResponseEntity<List<ScheduleGetAllResponseDto>> scheduleGetAll() {
         return ResponseEntity.ok(scheduleService.getAll());
     }
 
+    // 일정 단건 조회
     @GetMapping("/{scheduleId}")
     public ResponseEntity<ScheduleGetOneResponseDto> scheduleGetOne(@PathVariable Long scheduleId) {
         return ResponseEntity.ok(scheduleService.getOne(scheduleId));
     }
 
+    // 일정 수정
     @PutMapping("/{scheduleId}")
     public ResponseEntity<ScheduleUpdateResponseDto> scheduleUpdate(@PathVariable Long scheduleId, @Valid @RequestBody ScheduleUpdateRequestDto requestDto, HttpSession session) {
         if (session.getAttribute("loginUser") == null) {
@@ -46,6 +50,7 @@ public class ScheduleController {
         return ResponseEntity.ok(scheduleService.update(scheduleId, requestDto));
     }
 
+    // 일정 삭제
     @DeleteMapping("/{scheduleId}")
     public ResponseEntity<Void> scheduleDelete(@PathVariable Long scheduleId, HttpSession session) {
         if (session.getAttribute("loginUser") == null) {
@@ -55,6 +60,7 @@ public class ScheduleController {
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
+    // 일정 페이지 조회
     @GetMapping("/page")
     public ResponseEntity<Page<SchedulePageResponseDto>> getPage(
             @RequestParam(defaultValue = "0") int page,
