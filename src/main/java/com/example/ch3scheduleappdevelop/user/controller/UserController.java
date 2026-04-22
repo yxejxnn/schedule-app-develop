@@ -43,7 +43,7 @@ public class UserController {
     public ResponseEntity<UserUpdateResponseDto> userUpdate(@PathVariable Long userId, @Valid @RequestBody UserUpdateRequestDto requestDto, HttpSession session) {
         // 로그인 여부 확인 후 본인 여부 검증
         UserSessionDto loginUser = (UserSessionDto) session.getAttribute("loginUser");
-        if (session.getAttribute("loginUser") == null) {
+        if (loginUser == null) {
             throw new UnauthorizedException();
         }
         if (!loginUser.getId().equals(userId)) {

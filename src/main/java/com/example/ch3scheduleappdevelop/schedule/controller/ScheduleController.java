@@ -1,10 +1,8 @@
 package com.example.ch3scheduleappdevelop.schedule.controller;
 
-import com.example.ch3scheduleappdevelop.common.exception.ForbiddenException;
 import com.example.ch3scheduleappdevelop.common.exception.UnauthorizedException;
 import com.example.ch3scheduleappdevelop.schedule.dto.*;
 import com.example.ch3scheduleappdevelop.schedule.service.ScheduleService;
-import com.example.ch3scheduleappdevelop.user.dto.UserSessionDto;
 import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -45,7 +43,6 @@ public class ScheduleController {
 
     // 일정 수정
     @PutMapping("/{scheduleId}")
-
     public ResponseEntity<ScheduleUpdateResponseDto> scheduleUpdate(@PathVariable Long scheduleId, @Valid @RequestBody ScheduleUpdateRequestDto requestDto, HttpSession session) {
         if (session.getAttribute("loginUser") == null) {
             throw new UnauthorizedException();
