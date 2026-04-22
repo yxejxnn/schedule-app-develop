@@ -31,6 +31,6 @@ public class CommentController {
 
     @GetMapping
     public ResponseEntity<List<CommentGetAllResponseDto>> commentGetAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(commentService.getAll());
+        return ResponseEntity.ok(commentService.getAll());
     }
 }

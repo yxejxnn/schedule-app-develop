@@ -1,10 +1,12 @@
 package com.example.ch3scheduleappdevelop.schedule.dto;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
+@RequiredArgsConstructor
 public class ScheduleUpdateResponseDto {
 
     private final Long id;
@@ -13,11 +15,4 @@ public class ScheduleUpdateResponseDto {
     private final Long userId;
     private final LocalDateTime updatedAt;
 
-    public ScheduleUpdateResponseDto(Long id, String title, String content, Long userId, LocalDateTime updatedAt) {
-        this.id = id;
-        this.title = title;
-        this.content = content;
-        this.userId = userId;
-        this.updatedAt = updatedAt;
-    }
 }

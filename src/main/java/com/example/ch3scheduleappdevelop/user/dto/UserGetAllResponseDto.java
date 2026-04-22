@@ -1,15 +1,13 @@
 package com.example.ch3scheduleappdevelop.user.dto;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 @Getter
+@RequiredArgsConstructor
 public class UserGetAllResponseDto {
 
     private final Long id;
-    private final String userName;
+    private final String name;
 
-    public UserGetAllResponseDto(Long id, String userName) {
-        this.id = id;
-        this.userName = userName;
-    }
 }

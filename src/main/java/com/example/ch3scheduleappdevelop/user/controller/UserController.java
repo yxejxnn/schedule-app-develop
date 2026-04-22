@@ -27,12 +27,12 @@ public class UserController {
 
     @GetMapping
     public ResponseEntity<List<UserGetAllResponseDto>> userGetAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getAll());
+        return ResponseEntity.ok(userService.getAll());
     }
 
     @GetMapping("/{userId}")
     public ResponseEntity<UserGetOneResponseDto> userGetOne(@PathVariable Long userId) {
-        return ResponseEntity.status(HttpStatus.OK).body(userService.getOne(userId));
+        return ResponseEntity.ok(userService.getOne(userId));
     }
 
     @PutMapping("/{userId}")
@@ -45,7 +45,7 @@ public class UserController {
         if (!loginUser.getId().equals(userId)) {
             throw new ForbiddenException();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(userService.update(userId, requestDto));
+        return ResponseEntity.ok(userService.update(userId, requestDto));
     }
 
     @DeleteMapping("/{userId}")
@@ -66,12 +66,12 @@ public class UserController {
     public ResponseEntity<String> login(@Valid @RequestBody UserLoginRequestDto requestDto, HttpSession session) {
         UserSessionDto userSessionDto = userService.login(requestDto);
         session.setAttribute("loginUser", userSessionDto);
-        return ResponseEntity.status(HttpStatus.OK).body("로그인 성공!");
+        return ResponseEntity.ok("로그인 성공!");
     }
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(HttpSession session) {
         session.invalidate();
-        return ResponseEntity.status(HttpStatus.OK).body("로그아웃 성공!");
+        return ResponseEntity.ok("로그아웃 성공!");
     }
 }

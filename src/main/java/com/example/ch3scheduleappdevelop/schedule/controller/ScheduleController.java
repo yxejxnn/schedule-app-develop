@@ -30,12 +30,12 @@ public class ScheduleController {
 
     @GetMapping
     public ResponseEntity<List<ScheduleGetAllResponseDto>> scheduleGetAll() {
-        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.getAll());
+        return ResponseEntity.ok(scheduleService.getAll());
     }
 
     @GetMapping("/{scheduleId}")
     public ResponseEntity<ScheduleGetOneResponseDto> scheduleGetOne(@PathVariable Long scheduleId) {
-        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.getOne(scheduleId));
+        return ResponseEntity.ok(scheduleService.getOne(scheduleId));
     }
 
     @PutMapping("/{scheduleId}")
@@ -43,7 +43,7 @@ public class ScheduleController {
         if (session.getAttribute("loginUser") == null) {
             throw new UnauthorizedException();
         }
-        return ResponseEntity.status(HttpStatus.OK).body(scheduleService.update(scheduleId, requestDto));
+        return ResponseEntity.ok(scheduleService.update(scheduleId, requestDto));
     }
 
     @DeleteMapping("/{scheduleId}")

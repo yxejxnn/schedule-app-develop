@@ -1,10 +1,12 @@
 package com.example.ch3scheduleappdevelop.comment.dto;
 
 import lombok.Getter;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
 @Getter
+@RequiredArgsConstructor
 public class CommentGetAllResponseDto {
 
     private final Long id;
@@ -14,12 +16,4 @@ public class CommentGetAllResponseDto {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
 
-    public CommentGetAllResponseDto(Long id, Long scheduleId, Long userId, String content, LocalDateTime createdAt, LocalDateTime updatedAt) {
-        this.id = id;
-        this.scheduleId = scheduleId;
-        this.userId = userId;
-        this.content = content;
-        this.createdAt = createdAt;
-        this.updatedAt = updatedAt;
-    }
 }

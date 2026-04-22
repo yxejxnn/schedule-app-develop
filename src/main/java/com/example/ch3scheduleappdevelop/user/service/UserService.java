@@ -25,8 +25,8 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(requestDto.getPassword());
 
         User user = new User(
-                requestDto.getUserName(),
-                requestDto.getUserEmail(),
+                requestDto.getName(),
+                requestDto.getEmail(),
                 encodedPassword
         );
 
@@ -34,8 +34,8 @@ public class UserService {
 
         return new UserCreateResponseDto(
                 savedUser.getId(),
-                savedUser.getUserName(),
-                savedUser.getUserEmail(),
+                savedUser.getName(),
+                savedUser.getEmail(),
                 savedUser.getCreatedAt()
         );
     }
@@ -48,7 +48,7 @@ public class UserService {
         return userList.stream()
                 .map(user -> new UserGetAllResponseDto(
                         user.getId(),
-                        user.getUserName()
+                        user.getName()
                 ))
                 .collect(Collectors.toList());
     }
@@ -56,13 +56,13 @@ public class UserService {
     @Transactional(readOnly = true)
     public UserGetOneResponseDto getOne(Long userId) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new UserNotFoundException()
+                UserNotFoundException::new
         );
 
         return new UserGetOneResponseDto(
                 user.getId(),
-                user.getUserName(),
-                user.getUserEmail(),
+                user.getName(),
+                user.getEmail(),
                 user.getCreatedAt(),
                 user.getUpdatedAt()
         );
@@ -71,15 +71,15 @@ public class UserService {
     @Transactional
     public UserUpdateResponseDto update(Long userId, UserUpdateRequestDto requestDto) {
         User user = userRepository.findById(userId).orElseThrow(
-                () -> new UserNotFoundException()
+                UserNotFoundException::new
         );
 
-        user.update(requestDto.getUserName(), requestDto.getUserEmail());
+        user.update(requestDto.getName(), requestDto.getEmail());
 
         return new UserUpdateResponseDto(
                 user.getId(),
-                user.getUserName(),
-                user.getUserEmail(),
+                user.getName(),
+                user.getEmail(),
                 user.getUpdatedAt()
         );
     }
@@ -95,12 +95,12 @@ public class UserService {
 
     @Transactional(readOnly = true)
     public UserSessionDto login(UserLoginRequestDto requestDto) {
-        User user = userRepository.findByUserEmail(requestDto.getUserEmail()).orElseThrow(
-                () -> new InvalidCredentialsException()
+        User user = userRepository.findByEmail(requestDto.getEmail()).orElseThrow(
+                InvalidCredentialsException::new
         );
         if (!passwordEncoder.matches(requestDto.getPassword(), user.getPassword())) {
             throw new InvalidCredentialsException();
         }
-        return new UserSessionDto(user.getId(), user.getUserEmail());
+        return new UserSessionDto(user.getId(), user.getEmail());
     }
 }

@@ -29,11 +29,11 @@ public class CommentService {
     @Transactional
     public CommentCreateResponseDto save(CommentCreateRequestDto requestDto) {
         User user = userRepository.findById(requestDto.getUserId()).orElseThrow(
-                () -> new UserNotFoundException()
+                UserNotFoundException::new
         );
 
         Schedule schedule = scheduleRepository.findById(requestDto.getScheduleId()).orElseThrow(
-                () -> new ScheduleNotFoundException()
+                ScheduleNotFoundException::new
         );
 
         Comment comment = new Comment(

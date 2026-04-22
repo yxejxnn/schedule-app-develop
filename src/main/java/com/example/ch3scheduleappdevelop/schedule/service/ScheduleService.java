@@ -28,7 +28,7 @@ public class ScheduleService {
     @Transactional
     public ScheduleCreateResponseDto save(ScheduleCreateRequestDto requestDto) {
         User user = userRepository.findById(requestDto.getUserId()).orElseThrow(
-                () -> new UserNotFoundException()
+                UserNotFoundException::new
         );
 
         Schedule schedule = new Schedule(
@@ -65,7 +65,7 @@ public class ScheduleService {
     @Transactional(readOnly = true)
     public ScheduleGetOneResponseDto getOne(Long scheduleId) {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
-                () -> new ScheduleNotFoundException()
+                ScheduleNotFoundException::new
         );
 
         return new ScheduleGetOneResponseDto(
@@ -81,7 +81,7 @@ public class ScheduleService {
     @Transactional
     public ScheduleUpdateResponseDto update(Long scheduleId, ScheduleUpdateRequestDto requestDto) {
         Schedule schedule = scheduleRepository.findById(scheduleId).orElseThrow(
-                () -> new ScheduleNotFoundException()
+                ScheduleNotFoundException::new
         );
 
         schedule.update(requestDto.getTitle(), requestDto.getContent());
@@ -108,6 +108,13 @@ public class ScheduleService {
     public Page<SchedulePageResponseDto> getPage(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "updatedAt"));
         return scheduleRepository.findAll(pageable)
-                .map(schedule -> new SchedulePageResponseDto(schedule));
+                .map(schedule -> new SchedulePageResponseDto(
+                        schedule.getTitle(),
+                        schedule.getContent(),
+                        schedule.getCommentList().size(),
+                        schedule.getCreatedAt(),
+                        schedule.getUpdatedAt(),
+                        schedule.getUser().getName()
+                ));
     }
 }
